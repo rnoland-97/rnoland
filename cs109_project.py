@@ -264,64 +264,6 @@ def Shuffle_With_Clumps(Right_Deck, Left_Deck):
 
 
 
-	'''
-	Length_Of_Right_Deck = len(Right_Deck)
-	Length_Of_Left_Deck = len(Left_Deck)
-
-	#Keep track of the last index used from Right_Deck
-	Right_Deck_Tracker = 0
-	Left_Deck_Tracker = 0
-
-
-	while Length_Of_Right_Deck >= 0:
-
-		#Random Clump (i.e. the number of cards to add to clump)
-		Right_Random_Clump = np.random.choice(5, 1, replace=True)
-
-		#If the randomClump exceeds the number of cards left in the Right Deck, draw another randomClump
-		while Right_Random_Clump - Length_Of_Right_Deck > 0:
-			Right_Random_Clump = np.random.choice(5, 1, replace=True)
-
-		#We need to account for taking randomClump number of cards out of the Right Deck into the shuffled deck
-		Length_Of_Right_Deck = Length_Of_Right_Deck - Right_Random_Clump
-			
-
-		for i in range(len(Right_Random_Clump)):
-			Card_From_Right_Deck = Right_Deck[i + int(Right_Deck_Tracker)]
-			Shuffled_Deck.append(Card_From_Right_Deck)
-
-		#Keep track of the last index used from Right_Deck
-		Right_Deck_Tracker = Right_Deck_Tracker + Right_Random_Clump
-
-
-
-
-
-		#Random Clump (i.e. the number of cards to add to clump)
-		Left_Random_Clump = np.random.choice(5, 1, replace=True)
-
-		#If the randomClump exceeds the number of cards left in the Left Deck, draw another randomClump
-		while Left_Random_Clump - Length_Of_Left_Deck > 0:
-			Left_Random_Clump = np.random.choice(5, 1, replace=True)
-
-		#We need to account for taking randomClump number of cards out of the Left Deck into the shuffled deck
-		Length_Of_Left_Deck = Length_Of_Left_Deck - Left_Random_Clump
-
-
-		for i in range(len(Left_Random_Clump)):
-			Card_From_Left_Deck = Left_Deck[i + int(Left_Deck_Tracker)]
-			Shuffled_Deck.append(Card_From_Left_Deck)
-
-		#Keep track of the last index used from Left_Deck
-		Left_Deck_Tracker = Left_Deck_Tracker + Left_Random_Clump
-
-
-'''
-
-
-
-
-
 
 
 	
@@ -353,15 +295,27 @@ def main():
 
 	print("****************************************************")
 	#First card placed down is from Right Deck
-	#print("\tReturn value was:", Shuffle_Without_Clumps(Right_Deck, Left_Deck))
+	print("\tReturn value was:", Shuffle_Without_Clumps(Right_Deck, Left_Deck))
+	print("****************************************************")
 
+
+
+	print("****************************************************")
 	#First card placed down is from Left Deck
-	#print("\tReturn value was:", Shuffle_Without_Clumps(Left_Deck, Right_Deck))
+	print("\tReturn value was:", Shuffle_Without_Clumps(Left_Deck, Right_Deck))
 	print("****************************************************")
 
+
+
 	print("****************************************************")
+	#First card placed down is from Right Deck
 	print("\tReturn value was:", Shuffle_With_Clumps(Right_Deck, Left_Deck))
-	#print("\tReturn value was:", optional_function('background.csv', 'learningOutcomes.csv'))
+	print("****************************************************")
+
+
+	print("****************************************************")
+	#First card placed down is from Left Deck
+	print("\tReturn value was:", Shuffle_With_Clumps(Left_Deck, Right_Deck))
 	print("****************************************************")
 
 
