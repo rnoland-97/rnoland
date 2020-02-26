@@ -102,16 +102,176 @@ def Shuffle_Without_Clumps(Right_Deck, Left_Deck):
 
 def Shuffle_With_Clumps(Right_Deck, Left_Deck):
 
+	from collections import deque
+	
 	#Now shuffle Right and Left Decks 1-1 (ie a single card falls from Right Deck, followed by a single card from Left Deck falling on top of it)
 	Shuffled_Deck = []
 
+	Right_Deck_Queue = deque()
+	Left_Deck_Queue = deque()
 
+	#Creat a queue for Right Deck
+	for i in range(len(Right_Deck)):
+		Right_Deck_Queue.append(Right_Deck[i])
+
+	#Creat a queue for Left Deck
+	for i in range(len(Left_Deck)):
+		Left_Deck_Queue.append(Left_Deck[i])
+
+
+
+	print(Right_Deck_Queue)
+	print('OAHSDIFHAOSIDHF')
+	print(Left_Deck_Queue)
+
+	if ( len(Right_Deck) > len(Left_Deck) ):
+
+		print('Right bigger than left')
+
+
+		#Add card from Right Deck to Shuffled Deck
+		for i in range(len(Right_Deck_Queue)):
+
+			#Get a clump of Right Cards
+			Right_Random_Clump_List = np.random.choice(5, 1, replace=True)
+			Right_Random_Clump_Number = Right_Random_Clump_List[0]
+
+
+			#If the Clump of right cards exceeds the number of cards remaining in the Right Deck, draw another Clump of Right cards
+			while  len(Right_Deck_Queue) - Right_Random_Clump_Number < 0:
+				Right_Random_Clump_List = np.random.choice(5, 1, replace=True)
+				Right_Random_Clump_Number = Right_Random_Clump_List[0]
+
+
+			#Add Clump of Right cards to Shuffled Deck
+			for j in range((Right_Random_Clump_Number)):
+				Shuffled_Deck.append(Right_Deck_Queue.popleft())
+
+
+
+			#Add card from Left Deck to Shuffled Deck BUT ONLY IF LEFT_DECK is not empty
+			if  len(Left_Deck) != 0 and len(Left_Deck) >= i+1:
+			
+				#Get a clump of Left Cards
+				Left_Random_Clump_List = np.random.choice(5, 1, replace=True)
+				Left_Random_Clump_Number = Left_Random_Clump_List[0]
+
+				#If the Clump of left cards exceeds the number of cards remaining in the Left Deck, draw another Clump of Left cards
+				while  len(Left_Deck_Queue) - Left_Random_Clump_Number < 0:
+					Left_Random_Clump_List = np.random.choice(5, 1, replace=True)
+					Left_Random_Clump_Number = Left_Random_Clump_List[0]
+
+				#Add Clump of Left cards to Shuffled Deck
+				for j in range((Left_Random_Clump_Number)):
+					Shuffled_Deck.append(Left_Deck_Queue.popleft())
+
+
+	elif (len(Left_Deck) > len(Right_Deck)):
+
+		print('Left bigger than right')
+
+
+		#Add card from Right Deck to Shuffled Deck
+		for i in range(len(Right_Deck_Queue)):
+
+			#Get a clump of Right Cards
+			Right_Random_Clump_List = np.random.choice(5, 1, replace=True)
+			Right_Random_Clump_Number = Right_Random_Clump_List[0]
+
+
+			#If the Clump of right cards exceeds the number of cards remaining in the Right Deck, draw another Clump of Right cards
+			while  len(Right_Deck_Queue) - Right_Random_Clump_Number < 0:
+				Right_Random_Clump_List = np.random.choice(5, 1, replace=True)
+				Right_Random_Clump_Number = Right_Random_Clump_List[0]
+
+
+			#Add Clump of Right cards to Shuffled Deck
+			for j in range((Right_Random_Clump_Number)):
+				Shuffled_Deck.append(Right_Deck_Queue.popleft())
+
+
+
+			#Add card from Left Deck to Shuffled Deck BUT ONLY IF LEFT_DECK is not empty
+			if  len(Left_Deck) != 0 and len(Left_Deck) >= i+1:
+			
+				#Get a clump of Left Cards
+				Left_Random_Clump_List = np.random.choice(5, 1, replace=True)
+				Left_Random_Clump_Number = Left_Random_Clump_List[0]
+
+				#If the Clump of left cards exceeds the number of cards remaining in the Left Deck, draw another Clump of Left cards
+				while  len(Left_Deck_Queue) - Left_Random_Clump_Number < 0:
+					Left_Random_Clump_List = np.random.choice(5, 1, replace=True)
+					Left_Random_Clump_Number = Left_Random_Clump_List[0]
+
+				#Add Clump of Left cards to Shuffled Deck
+				for j in range((Left_Random_Clump_Number)):
+					Shuffled_Deck.append(Left_Deck_Queue.popleft())
+
+
+		#if there are still elements in the left deck, add them to end of Shuffled deck
+		if len(Left_Deck_Queue) != 0:
+
+			#Add remaining cards to Shuffled Deck
+			for i in range(len(Left_Deck_Queue)):
+				Shuffled_Deck.append(Left_Deck_Queue.popleft() )
+
+
+	#If the Left Deck and Right Deck are the same size
+	elif (len(Left_Deck) == len(Right_Deck)):
+
+		print('Right same as = left')
+
+		for i in range(len(Right_Deck_Queue)):
+
+			#Get a clump of Right Cards
+			Right_Random_Clump_List = np.random.choice(5, 1, replace=True)
+			Right_Random_Clump_Number = Right_Random_Clump_List[0]
+
+			#If the Clump of right cards exceeds the number of cards remaining in the Right Deck, draw another Clump of Right cards
+			while  len(Right_Deck_Queue) - Right_Random_Clump_Number < 0:
+				Right_Random_Clump_List = np.random.choice(5, 1, replace=True)
+				Right_Random_Clump_Number = Right_Random_Clump_List[0]
+
+
+			#Add Clump of Right cards to Shuffled Deck
+			for j in range((Right_Random_Clump_Number)):
+				Shuffled_Deck.append(Right_Deck_Queue.popleft())
+
+
+			#Add card from Left Deck to Shuffled Deck BUT ONLY IF LEFT_DECK is not empty
+			if  len(Left_Deck) != 0 and len(Left_Deck) >= i+1:
+			
+				#Get a clump of Left Cards
+				Left_Random_Clump_List = np.random.choice(5, 1, replace=True)
+				Left_Random_Clump_Number = Left_Random_Clump_List[0]
+
+				#If the Clump of left cards exceeds the number of cards remaining in the Left Deck, draw another Clump of Left cards
+				while  len(Left_Deck_Queue) - Left_Random_Clump_Number < 0:
+					Left_Random_Clump_List = np.random.choice(5, 1, replace=True)
+					Left_Random_Clump_Number = Left_Random_Clump_List[0]
+
+				#Add Clump of Left cards to Shuffled Deck
+				for j in range((Left_Random_Clump_Number)):
+					Shuffled_Deck.append(Left_Deck_Queue.popleft())
+
+
+	print(len(Shuffled_Deck))
+	print((Shuffled_Deck))
+
+  
+
+
+
+
+
+	'''
 	Length_Of_Right_Deck = len(Right_Deck)
 	Length_Of_Left_Deck = len(Left_Deck)
 
 	#Keep track of the last index used from Right_Deck
 	Right_Deck_Tracker = 0
 	Left_Deck_Tracker = 0
+
 
 	while Length_Of_Right_Deck >= 0:
 
@@ -156,7 +316,7 @@ def Shuffle_With_Clumps(Right_Deck, Left_Deck):
 		Left_Deck_Tracker = Left_Deck_Tracker + Left_Random_Clump
 
 
-
+'''
 
 
 
