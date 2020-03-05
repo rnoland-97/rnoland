@@ -362,6 +362,13 @@ def is_in_bounds(pos_y, pos_x, x_min, x_max, y_min, y_max):
 	
 	
 def Shuffle_With_Shmoosh():
+
+	#NOTE: Default settings have matrix of 7x7. Each cell in matrix is assumed to have dimensions of a single card. 7x7 was deemed appropriate length of most flat surfaces to smoosh shuffle cards
+	#In order to change dimensions of the Table on which we are smooshing cards, you much change the following variables- Row_Length, Column_Length, Square_Plane (to fix you must add appropriate number columns and rows), 
+	#x_max (x_max = 1 - number of columns in matrix), y_max (y_max = 1 - number of rows in matrix), pos (make sure in center of matrix), X_Axis_Move (make sure in center of matrix), and Y_Axis_Move (make sure in center of matrix)
+	#and initialize Square_Plane[][] = Deck for center cell in matrix
+
+
 	import random
 	from collections import deque
 	from numpy.random import rand
@@ -380,37 +387,37 @@ def Shuffle_With_Shmoosh():
 	Seconds_Spent_Shuffling = 60
 	Time_in_Seconds = Seconds_Spent_Shuffling * Number_Of_Hands_Shuffling_Deck
 
-	#Row Length
-	Row_Length = 3
+	#Row Length (number of cells in a row)
+	Row_Length = 7
 
-	#Column_Length 
-	Column_Length = 3
+	#Column_Length (number of cells in a column)
+	Column_Length = 7
 
 	#Create the rectangular plane where we will be smooshing cards.
 	#This matrix represents a 3x3 Square table where we will be smooshing. 
 	#The Deck of 52 cards are initially in the center (location 3x3) of the Square table 
-	Square_Plane = np.array([ [0,0,0],[0,Deck,0],[0,0,0] ])
+	Square_Plane = np.array([ [0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0], [0,0,0,Deck,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0], [0,0,0,0,0,0,0] ])
 
 	for row in range(Row_Length):
 		for column in range(Column_Length):
 			Square_Plane[row][column] = deque()
-	Square_Plane[1][1] = (Deck)
+	Square_Plane[3][3] = (Deck)
 
 	#Keep track of position of "Hand" as it moves through the matrix 
-	#starting position set at 1x1 for the 3x3 matrix 
-	X_Axis_Move = 1
-	Y_Axis_Move = 1
+	#starting position set at 3x3 for the 7x7 matrix 
+	X_Axis_Move = 3
+	Y_Axis_Move = 3
 
 	#Keep track of position of "Hand" to ensure that it is not outside bounds of Square_Plane
-	pos = [1, 1]
+	pos = [3, 3]
 
 	#Min and Max x-axis values according to Square_Plane matrix
 	x_min = 0
-	x_max = 2
+	x_max = 6
 
 	#Min and Max y-axis values according to Square_Plane matrix
 	y_min = 0
-	y_max = 2
+	y_max = 6
 
 	#Hand can only move either +1 square X-axid, -1 square X-axis, 1 square Y-Axis, -1 square Y-Axis
 	#Want to uniformly pick a value of [0][1], [0][-1], [1][0], [-1][0]
@@ -430,8 +437,8 @@ def Shuffle_With_Shmoosh():
 		#The values chosen are from the list Pick_Position_List which was created just before for loop
 		Move_Hand_Value = Pick_Position_List[random.randint(0,3)]
 		
-		print('Move Hand Value')
-		print(Move_Hand_Value)
+		#print('Move Hand Value')
+		#print(Move_Hand_Value)
 
 		#If move (0,1) AND CHECK THAT STILL IN BOUNDS OF MATRIX
 		if Move_Hand_Value[0] == 0 and Move_Hand_Value[1] == 1:
@@ -456,7 +463,7 @@ def Shuffle_With_Shmoosh():
 				#Update position of Hand 
 				X_Axis_Move += 1
 
-				print(Y_Axis_Move, X_Axis_Move)
+				#print(Y_Axis_Move, X_Axis_Move)
 
 			#Account for possibility that we do go out bounds, so then take away the 1 value added to pos before for loop
 			else:
@@ -487,7 +494,7 @@ def Shuffle_With_Shmoosh():
 				#Acount for new position of Hand 
 				X_Axis_Move -= 1
 
-				print(Y_Axis_Move, X_Axis_Move)
+				#print(Y_Axis_Move, X_Axis_Move)
 
 			#Account for possibility that we do go out bounds, so then take away the 1 value added to pos
 			else:
@@ -516,7 +523,7 @@ def Shuffle_With_Shmoosh():
 				#Acount for new position of Hand 
 				Y_Axis_Move += 1
 
-				print(Y_Axis_Move, X_Axis_Move)
+				#print(Y_Axis_Move, X_Axis_Move)
 
 			#Update Pos (Our check to make sure we never go out of bounds of matrix)
 			else:
@@ -526,6 +533,7 @@ def Shuffle_With_Shmoosh():
 		#If move (-1,0) AND CHECK THAT STILL IN BOUNDS OF MATRIX
 		elif Move_Hand_Value[0] == -1 and Move_Hand_Value[1] == 0:
 
+			#Check That new position is still in bounds of matrix
 			pos[0] = pos[0] - 1
 			if is_in_bounds(pos[0], pos[1], x_min, x_max, y_min, y_max):
 
@@ -544,17 +552,17 @@ def Shuffle_With_Shmoosh():
 				#Acount for new position of Hand 
 				Y_Axis_Move -= 1
 
-				print(Y_Axis_Move, X_Axis_Move)
+				#print(Y_Axis_Move, X_Axis_Move)
 
 			#Update Pos (Our check to make sure we never go out of bounds of matrix)
 			else:
 				pos[0]=pos[0] + 1
 
-		print('*****************')
-		print(Square_Plane)
+		#print('*****************')
+		#print(Square_Plane)
 
 
-	#Go through each every row in each column (So every point in Y-Axis for each X-Axis) and add all cards into an independent list at each X-Axis point
+	#Go through each row in each column (So every point in Y-Axis for each X-Axis) and add all cards into an independent list at each X-Axis point
 	#Concatenate together these independent lists of cards along the X-Axis to create our shuffled deck 
 	#In other words, the cards are arranged linearly along the X-Axis in an increasing order that respects the X-Axis values 
 	Shuffled_Deck_Smoosh = []
@@ -572,12 +580,124 @@ def Shuffle_With_Shmoosh():
 			#Initialize this cell in Matrix Square_Plane to be an empty deque
 			Square_Plane[row][column] = deque()
 
-	print('*****************')
+	#print('*****************')
 			
-	print(Shuffled_Deck_Smoosh)
-	print(len(Shuffled_Deck_Smoosh))
+	#print(Shuffled_Deck_Smoosh)
+	#print(len(Shuffled_Deck_Smoosh))
+
+	return Shuffled_Deck_Smoosh
 
 		
+
+def Check_If_Random(Right_Deck, Left_Deck):
+
+	#A direct test of randomness is not possible given that the number of possible arrangements of a deck of cards is 52! different arrangements. If we could do this, the best way to test how random a shuffled deck is 
+	#would be to see if each possible deck arrangement (of which there are 52!) appears equally likely among the deck shuffled by the smooshing or riffle techniques.
+	#Given that this is not possible, the function Check_If_Random() instead employs a statistical test to detect nonrandomness- namely it checks if the non-shuffled deck's top card has moved to EVERY POSITION in the deck
+	#EQUALLY OFTEN in 100 samples of smooshing the deck
+
+	#Note that the unordered deck created within function Smoosh Deck is always ordered the same [0,1,2,3,.......,51]
+
+	#Create a map which keeps track of how often the topmost card of Original Deck (card 0) appeared in each possible position
+	appearances = {}
+
+	#Initialize each key (position in deck) to 0 (number of card 0's)
+	for i in range(52):
+		appearances[i] = 0
+
+	for i in range(100):
+
+		#NOTE!!! HERE YOU MUST CHOOSE EITHER TO USE THE RIFFLE_SHUFFLE_MULTIPLE_TIMES or SHUFFLE_WITH_SMOOTH. TO MAKE THIS CHOICE
+		#SIMPLY TAKE AWAY # IN FRONT OF WHICH ONE YOU WANT TO USE
+
+		#Riffle Shuffle
+		Shuffled_Deck = Riffle_Shuffle_Multiple_Times(Right_Deck, Left_Deck)
+
+		#Smoosh Shuffle
+		#Shuffled_Deck = Shuffle_With_Shmoosh()
+
+		#Find the index of the top card of the original deck (card 0)
+		OriginalDeck_TopCard_ShuffledPosition = Shuffled_Deck.index(0)
+
+		#Add that position to the dictionary appearances, which is allowing us to keep track of how many times the top card appears in a given position of the shuffled deck
+		appearances[OriginalDeck_TopCard_ShuffledPosition] += 1
+
+	print(appearances)
+
+	#Does top card move equally often to each position. Therefore, we can take a single key,value pair, and ask if every key has this value. If not, then our shuffling has not passed the test of randomness
+	#I.e.- Is the value for each key within appearances the same?
+
+	#Choose a single key's value from appearances
+	Equally_Often_Value_Check = appearances[2]
+
+	print(Equally_Often_Value_Check)
+
+	#loop through each value in appearances and see if they are all equal
+	for i in appearances:
+
+		print(appearances[i])
+		if appearances[i] != Equally_Often_Value_Check:
+
+			#Return False if fails randomness test
+			return False
+
+	#Return True if passes randomness test
+	return True
+
+
+
+def Riffle_Shuffle_Multiple_Times(Right_Deck, Left_Deck):
+	#Note: Shuffle the deck 7 times according to the simulator Shuffle_According_To_Paper, which simulates riffle
+	#shuffling with aspects of Persi Diaconsis' research
+	#Create conditions for binomial distribution of splitting deck into two decks (right and left deck)
+
+	#first, create a list of all the probabilites for each k
+	List_Of_Index_K = []
+	for i in range(0, 53):
+		List_Of_Index_K.append(i)
+
+	#second, create a list for each probability that k cards are sorted into sub-deck (1 of two split-decks) 
+	List_Of_Probability_K = []
+
+	f = math.factorial
+	for k in range(0,53): 
+
+		#According to the paper- "the chance that k cards are cut off is (n choose k)/ 2^n for 0 =< k =< n" 
+		Probability_k = ( (f(52) / f(k) / f(52-k)) / 2**(52) )
+		List_Of_Probability_K.append(Probability_k)
+
+
+
+	for i in range(20):
+		Shuffled_Deck = Shuffle_According_To_Paper(Right_Deck, Left_Deck)
+
+		#Split Deck according to Binomial Distribution as did in Create Deck Function
+		#Get an Index to split the deck according to the binomial distribution 
+		List_Index_To_Split_Deck = np.random.choice(List_Of_Index_K, 1, replace=True, p= List_Of_Probability_K)
+		Index_To_Split_Deck = List_Index_To_Split_Deck[0]
+
+		#Reinitialize the Right and Left Deck to be empty
+		Right_Deck = []
+		Left_Deck = []
+
+		#Create two decks of cards from the Shuffled Deck
+		counter = 0.0
+
+		for i in range(len(Shuffled_Deck)):
+			if (counter < Index_To_Split_Deck):
+				Right_Deck.append(Shuffled_Deck[i] )
+
+				counter = counter + 1
+
+			else:
+				Left_Deck.append(Shuffled_Deck[i] )
+
+		
+	return(Shuffled_Deck)
+
+
+
+
 
 
 
@@ -585,7 +705,8 @@ def Shuffle_With_Shmoosh():
 
 def main():
 
-	#"Grab half cards" by picking uniformly a random index among all indices 0-51
+	#These Are the Two empty decks that will be filled once we split a full deck, of which is done in Create_RightDeck_LeftDeck.
+	#Note that the original ordering of decks in this program are always [0,1,2,3,.....,51]
 	Right_Deck = []
 	Left_Deck = []
 
@@ -593,20 +714,16 @@ def main():
 	Create_RightDeck_LeftDeck(Right_Deck, Left_Deck)
 	print("****************************************************")
 
-
-
 	print("****************************************************")
 	#First card placed down is from Right Deck
 	#print("\tReturn value was:", Shuffle_Without_Clumps(Right_Deck, Left_Deck) )
 	print("****************************************************")
 
 
-
 	print("****************************************************")
 	#First card placed down is from Left Deck
 	#print("\tReturn value was:", Shuffle_Without_Clumps(Left_Deck, Right_Deck))
 	print("****************************************************")
-
 
 
 	print("****************************************************")
@@ -623,7 +740,25 @@ def main():
 
 	print("****************************************************")
 	#First card placed down is from Left Deck
-	print("\tReturn value was:", Shuffle_With_Shmoosh() )
+	#print("\tReturn value was:", Shuffle_According_To_Paper(Right_Deck, Left_Deck))
+	print("****************************************************")
+
+
+	print("****************************************************")
+	#Shuffle Deck via Smoosh method
+	#print("\tReturn value was:", Shuffle_With_Shmoosh() )
+	print("****************************************************")
+
+
+	print("****************************************************")
+	#Shuffle Deck via Riffle Shuffle method multiple times
+	#print("\tReturn value was:", Riffle_Shuffle_Multiple_Times(Right_Deck, Left_Deck) )
+	print("****************************************************")
+
+
+	print("****************************************************")
+	#Check if the returned shuffle is sufficiently random 
+	print("\tReturn value was:", Check_If_Random(Right_Deck, Left_Deck) )
 	print("****************************************************")
 
 	print("****************************************************")
